@@ -138,6 +138,14 @@ def cache_solution(start=1, end=11, expct_sum=21):
 
 if __name__ == '__main__':
     score = 0
+    print(
+        '''
+        Math Game: you will be given 4 numbers. 
+        You can use + - * / ( ) to create a formula with these 4 numbers
+        Our target is the evaluation of the formula equals 21. 
+        Let's start...
+    '''
+    )
     while True:
         nums = []
         a = random.randrange(1, 11)
@@ -150,18 +158,20 @@ if __name__ == '__main__':
             answer = input(' '.join(['Please enter your answer for ', str(a), str(b), str(c), str(d), ': ']))
         else:
             continue
-
         answer = answer.replace(' ', '')
+        while re.match("[^0-9()+\-*/]",answer):
+            answer = input(' '.join(['Please enter your answer for ', str(a), str(b), str(c), str(d), ': ']))
+            answer = answer.replace(' ', '')
         answer_key = '_'.join([str(i) for i in sorted([int(j) for j in re.split("[-*/()\+]", answer) if j])])
         if answer_key != key:
             print('You used wrong numbers')
-            break
+            break 
         elif answer in cached_solution:
-            print('You are correct')
             score += 1
+            print('You are correct, total score: ', score)
         elif eval(answer) == 21:
-            print('Your answer is not in my solution list but you are correct')
             score += 1
+            print('Your answer may used unnecessary parenthesis but you are correct, total score: ', score)
         else:
             break
     print('Correct answers are: ', cached_solution)
